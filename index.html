@@ -12,11 +12,12 @@
             --text-muted: #666666;
             --primary: #0076ff;
             --success: #28a745;
+            --danger: #dc3545;
             --border: #dddddd;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
@@ -33,85 +34,123 @@
             border-radius: 12px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             box-sizing: border-box;
-            position: relative;
+        }
+
+        h2, h3 {
+            margin-top: 0;
+            color: var(--text-main);
         }
 
         h2 {
-            margin-top: 0;
             text-align: center;
-            color: var(--text-main);
             border-bottom: 2px solid var(--bg-color);
             padding-bottom: 10px;
         }
 
-        .form-group {
+        .section-card {
+            background: #fafafa;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
             margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
         }
 
         label {
             display: block;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             color: var(--text-muted);
         }
 
-        input, textarea {
+        input, textarea, select {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
             box-sizing: border-box;
-            background-color: #fafafa;
-        }
-
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            background-color: #fff;
+            background-color: #ffffff;
         }
 
         .row {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
 
         .row .form-group {
             flex: 1;
         }
 
-        .summary-box {
-            background-color: var(--bg-color);
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            border-left: 4px solid var(--primary);
+        .btn-add {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
         }
 
-        .summary-row {
+        .item-list {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .item-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 0.95rem;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .btn-delete {
+            background: none;
+            border: none;
+            color: var(--danger);
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0 5px;
+        }
+
+        .summary-box {
+            background-color: #eef5ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid var(--primary);
         }
 
         .summary-total {
             display: flex;
             justify-content: space-between;
             font-weight: bold;
-            font-size: 1.2rem;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid var(--border);
+            font-size: 1.25rem;
             color: var(--text-main);
         }
 
-        /* Toast notification styling */
         .toast {
             display: none;
-            background-color: #333333;
-            color: #ffffff;
+            background-color: #222;
+            color: white;
             text-align: center;
             border-radius: 8px;
             padding: 12px;
@@ -123,158 +162,222 @@
             width: 80%;
             max-width: 400px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-
-        .btn-group {
-            margin-top: 20px;
         }
 
         .btn-copy {
             width: 100%;
-            padding: 16px;
+            padding: 15px;
             border: none;
             border-radius: 8px;
             font-size: 1.1rem;
             font-weight: bold;
             color: white;
-            background-color: var(--primary);
+            background-color: var(--success);
             cursor: pointer;
-            transition: background 0.2s ease;
-        }
-
-        .btn-copy:hover {
-            background-color: #0062cc;
+            margin-top: 15px;
         }
     </style>
 </head>
 <body>
 
-<!-- Popup Alert Notification -->
 <div id="toastMessage" class="toast">
     📋 Quote copied! Paste it directly into Email or WhatsApp.
 </div>
 
 <div class="app-container">
-    <h2>Quote Generator</h2>
+    <h2>Quote Generator (ZAR)</h2>
     
+    <!-- Base Info -->
     <div class="form-group">
         <label for="clientName">Client Name</label>
-        <input type="text" id="clientName" placeholder="e.g. John Doe">
+        <input type="text" id="clientName" placeholder="e.g. Sipho Khumalo">
     </div>
 
     <div class="form-group">
         <label for="jobDescription">Job Description / Scope</label>
-        <textarea id="jobDescription" rows="3" placeholder="e.g. Custom gate fabrication and installation"></textarea>
+        <textarea id="jobDescription" rows="2" placeholder="e.g. Driveway gate repairs"></textarea>
     </div>
 
-    <div class="form-group">
-        <label for="materialsCost">Materials & Steel Cost ($)</label>
-        <input type="number" id="materialsCost" value="0" min="0" step="0.01">
-    </div>
-
-    <div class="row">
+    <!-- Section: Materials -->
+    <div class="section-card">
+        <div class="section-title">1. Steel Materials (6m Profiles)</div>
         <div class="form-group">
-            <label for="laborCost">Labor Cost ($)</label>
-            <input type="number" id="laborCost" value="0" min="0" step="0.01">
+            <label for="matType">Material Type / Profile Description</label>
+            <input type="text" id="matType" placeholder="e.g. 50x50 Square Tubing">
         </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="matFullPrice">6m Length Price (R)</label>
+                <input type="number" id="matFullPrice" placeholder="0.00" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="matMetersUsed">Meters Used</label>
+                <input type="number" id="matMetersUsed" placeholder="e.g. 4.5" min="0" step="0.01">
+            </div>
+        </div>
+        <button class="btn-add" onclick="addMaterial()">Add Steel Item</button>
+        <div class="item-list" id="materialsListUI"></div>
+    </div>
+
+    <!-- Section: Consumables -->
+    <div class="section-card">
+        <div class="section-title">2. Consumables</div>
+        <div class="row">
+            <div class="form-group" style="flex: 1.5;">
+                <label for="conType">Item Type</label>
+                <select id="conType">
+                    <option value="Cutting Disks">Cutting Disks</option>
+                    <option value="Welding Rods">Welding Rods</option>
+                    <option value="Paint">Paint</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="conQty">Qty</label>
+                <input type="number" id="conQty" placeholder="1" min="1" step="1">
+            </div>
+            <div class="form-group">
+                <label for="conUnitPrice">Unit Price (R)</label>
+                <input type="number" id="conUnitPrice" placeholder="0.00" min="0" step="0.01">
+            </div>
+        </div>
+        <button class="btn-add" onclick="addConsumable()">Add Consumable</button>
+        <div class="item-list" id="consumablesListUI"></div>
+    </div>
+
+    <!-- Section: Labor -->
+    <div class="section-card">
+        <div class="section-title">3. Labor Input</div>
         <div class="form-group">
-            <label for="consumablesCost">Consumables ($)</label>
-            <input type="number" id="consumablesCost" value="0" min="0" step="0.01">
+            <label for="laborCostInput">Raw Labor Cost (R)</label>
+            <input type="number" id="laborCostInput" value="0" min="0" step="0.01" oninput="calculateFinalQuote()">
         </div>
     </div>
 
+    <!-- Grand Output Display -->
     <div class="summary-box">
-        <div class="summary-row">
-            <span>Materials:</span>
-            <span id="lblMaterials">$0.00</span>
-        </div>
-        <div class="summary-row">
-            <span>Labor:</span>
-            <span id="lblLabor">$0.00</span>
-        </div>
-        <div class="summary-row">
-            <span>Consumables:</span>
-            <span id="lblConsumables">$0.00</span>
-        </div>
         <div class="summary-total">
-            <span>Total Quote:</span>
-            <span id="lblTotal">$0.00</span>
+            <span>Total Retail Price:</span>
+            <span id="lblTotalDisplay">R 0.00</span>
         </div>
     </div>
 
-    <div class="btn-group">
-        <button class="btn-copy" onclick="copyQuoteToClipboard()">Copy Quote & Send</button>
-    </div>
+    <button class="btn-copy" onclick="copyQuoteToClipboard()">Copy Quote & Close</button>
 </div>
 
 <script>
-    const fields = ['clientName', 'jobDescription', 'materialsCost', 'laborCost', 'consumablesCost'];
-    const inputs = {};
-    fields.forEach(field => inputs[field] = document.getElementById(field));
+    // In-memory array data states
+    let materials = [];
+    let consumables = [];
 
-    fields.forEach(field => {
-        inputs[field].addEventListener('input', calculateQuote);
-    });
+    function addMaterial() {
+        const type = document.getElementById('matType').value.trim();
+        const fullPrice = parseFloat(document.getElementById('matFullPrice').value) || 0;
+        const metersUsed = parseFloat(document.getElementById('matMetersUsed').value) || 0;
 
-    function calculateQuote() {
-        const mat = parseFloat(inputs['materialsCost'].value) || 0;
-        const lab = parseFloat(inputs['laborCost'].value) || 0;
-        const con = parseFloat(inputs['consumablesCost'].value) || 0;
-        const total = mat + lab + con;
+        if (!type || fullPrice <= 0 || metersUsed <= 0) return;
 
-        document.getElementById('lblMaterials').innerText = `$${mat.toFixed(2)}`;
-        document.getElementById('lblLabor').innerText = `$${lab.toFixed(2)}`;
-        document.getElementById('lblConsumables').innerText = `$${con.toFixed(2)}`;
-        document.getElementById('lblTotal').innerText = `$${total.toFixed(2)}`;
+        // Formula execution: (Full Length Price / 6) * Meters Used
+        const calculatedCost = (fullPrice / 6) * metersUsed;
 
-        return {
-            client: inputs['clientName'].value || 'Valued Client',
-            job: inputs['jobDescription'].value || 'Welding Services',
-            mat: mat.toFixed(2),
-            lab: lab.toFixed(2),
-            con: con.toFixed(2),
-            total: total.toFixed(2)
-        };
+        materials.push({ type, fullPrice, metersUsed, cost: calculatedCost });
+        
+        // Reset inputs
+        document.getElementById('matType').value = '';
+        document.getElementById('matFullPrice').value = '';
+        document.getElementById('matMetersUsed').value = '';
+
+        renderLists();
     }
 
-    function buildTextMessage(data) {
-        return `QUOTATION\n\n` +
-               `Client: ${data.client}\n` +
-               `Job Description: ${data.job}\n\n` +
-               `Cost Breakdown:\n` +
-               `- Materials & Steel: $${data.mat}\n` +
-               `- Labor: $${data.lab}\n` +
-               `- Consumables: $${data.con}\n\n` +
-               `TOTAL AMOUNT: $${data.total}\n\n` +
-               `Thank you for your business! Please let us know if you would like to proceed.`;
+    function addConsumable() {
+        const type = document.getElementById('conType').value;
+        const qty = parseInt(document.getElementById('conQty').value) || 1;
+        const unitPrice = parseFloat(document.getElementById('conUnitPrice').value) || 0;
+
+        if (unitPrice <= 0) return;
+
+        const calculatedCost = unitPrice * qty;
+
+        consumables.push({ type, qty, unitPrice, cost: calculatedCost });
+
+        // Reset inputs
+        document.getElementById('conQty').value = '';
+        document.getElementById('conUnitPrice').value = '';
+
+        renderLists();
+    }
+
+    function removeMaterial(index) {
+        materials.splice(index, 1);
+        renderLists();
+    }
+
+    function removeConsumable(index) {
+        consumables.splice(index, 1);
+        renderLists();
+    }
+
+    function renderLists() {
+        const matUI = document.getElementById('materialsListUI');
+        matUI.innerHTML = '';
+        materials.forEach((item, i) => {
+            matUI.innerHTML += `<div class="item-row">
+                <span>${item.type} (${item.metersUsed}m)</span>
+                <span>R ${item.cost.toFixed(2)} <button class="btn-delete" onclick="removeMaterial(${i})">×</button></span>
+            </div>`;
+        });
+
+        const conUI = document.getElementById('consumablesListUI');
+        conUI.innerHTML = '';
+        consumables.forEach((item, i) => {
+            conUI.innerHTML += `<div class="item-row">
+                <span>${item.type} (x${item.qty})</span>
+                <span>R ${item.cost.toFixed(2)} <button class="btn-delete" onclick="removeConsumable(${i})">×</button></span>
+            </div>`;
+        });
+
+        calculateFinalQuote();
+    }
+
+    function calculateFinalQuote() {
+        const totalMaterials = materials.reduce((sum, item) => sum + item.cost, 0);
+        const totalConsumables = consumables.reduce((sum, item) => sum + item.cost, 0);
+        const rawLabor = parseFloat(document.getElementById('laborCostInput').value) || 0;
+
+        // Applying the pricing formula: Cost = Labor + Materials + Consumables
+        const totalRawCost = totalMaterials + totalConsumables + rawLabor;
+
+        // Wholesale = Cost * 2 | Retail = Wholesale * 2 (Therefore: Cost * 4)
+        const totalRetailPrice = totalRawCost * 4;
+
+        document.getElementById('lblTotalDisplay').innerText = `R ${totalRetailPrice.toFixed(2)}`;
+
+        return totalRetailPrice.toFixed(2);
     }
 
     function copyQuoteToClipboard() {
-        const data = calculateQuote();
-        const text = buildTextMessage(data);
+        const client = document.getElementById('clientName').value.trim() || 'Valued Client';
+        const job = document.getElementById('jobDescription').value.trim() || 'Welding Services';
+        const finalPrice = calculateFinalQuote();
 
-        // Core dynamic execution for device clipboard handling
-        navigator.clipboard.writeText(text).then(() => {
-            showToast();
+        // Option A output format: Clean, plain text containing only the final calculated retail figure
+        const textMessage = `QUOTATION\n\n` +
+                            `Client: ${client}\n` +
+                            `Job Description: ${job}\n\n` +
+                            `TOTAL AMOUNT: R ${finalPrice}\n\n` +
+                            `Thank you for your business! Please let us know if you would like to proceed.`;
+
+        navigator.clipboard.writeText(textMessage).then(() => {
+            const toast = document.getElementById('toastMessage');
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
         }).catch(err => {
-            console.error('Failed to copy text: ', err);
-            alert('Fallback: Could not auto-copy. Please check browser clipboard permissions.');
+            console.error('Clipboard action failed:', err);
         });
-    }
-
-    function showToast() {
-        const toast = document.getElementById('toastMessage');
-        toast.style.display = 'block';
-        
-        // Clear message automatically after 3 seconds
-        setTimeout(() => {
-            toast.style.display = 'none';
-        }, 3000);
     }
 </script>
 
 </body>
-  </html>
-      
+    </html>
+        
